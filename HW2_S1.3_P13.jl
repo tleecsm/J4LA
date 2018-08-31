@@ -6,6 +6,8 @@ Section 1.3
 Problem 13
 =#
 
+println()
+
 # Create the Matrix to be evaluated
 A = [1 -4 2 3 ;
      0 3 5 -7 ;
@@ -31,7 +33,12 @@ println()
 index = 0
 leadingEntryLocated = false
 consistent = true
-for value in A
+for value in A_rref
+    global index
+    global columns
+    global leadingEntryLocated
+    global consistent
+
     # Determine first if we are in the 0 column of a Row
     if index % columns == 0
         # If here then:
@@ -49,7 +56,7 @@ for value in A
         if value != 0
             # If here then:
             # This row has a leading entry somewhere
-            if index % columns == columns - 1
+            if index % columns == (columns - 1)
                 # If here then:
                 # This entry is in the last column
                 # Matrix is not consistent
@@ -61,7 +68,7 @@ for value in A
             end
         end
     end
-        index = index+1
+    index = index+1
 end
 
 if consistent == true
@@ -69,11 +76,16 @@ if consistent == true
     # Matrix is consistent
     println("This matrix is consistent.")
     print("Hence the vector b is a linear combination of the ")
-    print(" vectors made by the columns of the original matrix.")
+    print("vectors made by the columns of the original matrix.")
 else
     # Else:
     # Matrix is inconsistent
     println("This matrix is inconsistent.")
     print("Hence the vector b is NOT a linear combination of the ")
-    print(" vectors made by the columns of the original matrix.")
+    print("vectors made by the columns of the original matrix.")
 end
+
+# Print two blanks lines for a better display
+println()
+println()
+exit(0)
