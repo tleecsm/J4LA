@@ -60,7 +60,9 @@ print("x = ")
 for freeVar in freeVars
 	vector = zeros(6)
 	for rows = 1:sizeA_rref[1]
-		vector[rows] = A_rref[rows,Int64(freeVar)]
+		if A_rref[rows,Int64(freeVar)] != 0
+			vector[rows] = -A_rref[rows,Int64(freeVar)]
+		end
 	end
 	vector[Int64(freeVar)] = 1
 	println()
