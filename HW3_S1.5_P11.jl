@@ -1,67 +1,60 @@
 import RowEchelon
 
 #=
-Homework 2
-Section 1.4
-Problem 37
+Homework 3
+Section 1.5
+Problem 11
 =#
 
-# Create the Matrix to be evaluated
-A = [ 7 2 -5 8 ;
-	 -5 -3 4 -9 ;
-	 6 10 -2 7 ;
-	 -7 9 2 15 ]
+# Create the matrix to be evaluated
+A = [1 -4 -2 0 -3 -5 ;
+	 0 0 1 0 0 -1 ;
+	 0 0 0 0 1 -4 ;
+	 0 0 0 0 0 0 ]
 
-# Store the columns for future reference 
-columns = 4
-
-# Row reduce the Matrix
+# Row reduce matrix A
 A_rref = RowEchelon.rref(A)
+sizeA_rref = size(A_rref)
 
-println("Original Matrix, A")
-println(A)
-println("Row Reduced Echelon Matrix:")
-println(A_rref)
-
-# Determine whether or not matrix has a pivot position in each row
-hasAllZeroRow = false
-index = 1
-currentZeros = 0
-while index <= columns
-	global index
-	global hasAllZeroRow
-	global currentZeros
-	
-	# Parse through each entry of the rows, searching for an all 0 row.
-	for entry in A_rref[index, :]
-		global hasAllZeroRow
-		global currentZeros
-		
-		if entry == 0
-			# If here then:
-			# Current entry is a zero, increment zero counter
-			currentZeros += 1
+# Identify free variables
+leadingEntryLocated = false
+pivotCols = zeros(0)
+pivotRows = zeros(0)
+row = 1
+col = 1
+while row <= sizeA_rref[1]
+	# Loop once for each row
+	global leadingEntryLocated
+	global pivotCols
+	global pivotRows
+	global row
+	global col
+	leadingEntryLocated = false
+	col = 1
+	while col <= sizeA_rref[2]
+		# Loop once for each col
+		if A_rref[row,col] != 0 && leadingEntryLocated == false
+			# Leading Entry Located
+			leadingEntryLocated = true
+			append!(pivotCols,col)
+			append!(pivotRows,row)
 		end
+		col += 1
 	end
-	if currentZeros == columns
-		# If here then:
-		# A row with all zeroes was found
-		hasAllZeroRow = true	
-	end
-	currentZeros = 0
-	index += 1
+	row += 1
 end
 
-if hasAllZeroRow == true
-	# If here then:
-	# The matrix does not span R4
-	println("The Matrix does not span R4")
-else
-	# If here then:
-	# The matrix does span all elements in R4
-	println("The Matrix does span R4")
+freeVars = zeros(0)
+
+for i = 1:sizeA_rref[2]
+	if !(i in pivotCols)
+		# Every column that isnt a pivot column
+		# Has a free variable
+		append!(freeVars, i)
+	end
 end
 
-println()
-println()
-exit(0)
+println(A_rref)
+println(pivotCols)
+println(freeVars)
+println(pivotRows)
