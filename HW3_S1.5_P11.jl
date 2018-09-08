@@ -54,7 +54,26 @@ for i = 1:sizeA_rref[2]
 	end
 end
 
-println(A_rref)
-println(pivotCols)
-println(freeVars)
-println(pivotRows)
+# Print Solution
+println()
+print("x = ")
+for freeVar in freeVars
+	vector = zeros(6)
+	for rows = 1:sizeA_rref[1]
+		vector[rows] = A_rref[rows,Int64(freeVar)]
+	end
+	vector[Int64(freeVar)] = 1
+	println()
+	print("x_");print(Int64(freeVar))
+	print("(")
+	print(vector)
+	print(")")
+	freeVarLength = size(freeVars)[1]
+	if freeVar != freeVars[freeVarLength]
+		print(" + ")
+	end
+end
+
+println()
+println()
+exit(0)
