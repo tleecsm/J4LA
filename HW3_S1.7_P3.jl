@@ -2,80 +2,51 @@ import RowEchelon
 
 #=
 Homework 3
-Section 1.5
-Problem 11
+Section 1.7
+Problem 3
 =#
 
-# Create the matrix to be evaluated
-A = [1 -4 -2 0 -3 -5 ;
-	 0 0 1 0 0 -1 ;
-	 0 0 0 0 1 -4 ;
-	 0 0 0 0 0 0 ]
+# Create the matrix
+A = [2 -4 ; -3 6]
 
-# Row reduce matrix A
+# Row Reduce the matrix
 A_rref = RowEchelon.rref(A)
-sizeA_rref = size(A_rref)
 
-# Identify free variables
-leadingEntryLocated = false
-pivotCols = zeros(0)
-pivotRows = zeros(0)
-row = 1
-col = 1
-while row <= sizeA_rref[1]
-	# Loop once for each row
-	global leadingEntryLocated
-	global pivotCols
-	global pivotRows
-	global row
-	global col
-	leadingEntryLocated = false
-	col = 1
-	while col <= sizeA_rref[2]
-		# Loop once for each col
-		if A_rref[row,col] != 0 && leadingEntryLocated == false
-			# Leading Entry Located
-			leadingEntryLocated = true
-			append!(pivotCols,col)
-			append!(pivotRows,row)
-		end
-		col += 1
-	end
-	row += 1
-end
+# Determine whether there is a row of all zeroes
+hasAllZeroRow = false
+index = 1
+currentZeros = 0
+while index <= size(A_rref)[2]
+	global index
+	global hasAllZeroRow
+	global currentZeros
 
-freeVars = zeros(0)
+	# Parse through each entry of the rows, searching for an all 0 row.
+	for entry in A_rref[index, :]
+		global hasAllZeroRow
+		global currentZeros
 
-for i = 1:sizeA_rref[2]
-	if !(i in pivotCols)
-		# Every column that isnt a pivot column
-		# Has a free variable
-		append!(freeVars, i)
-	end
-end
-
-# Print Solution
-println()
-print("x = ")
-for freeVar in freeVars
-	vector = zeros(6)
-	for rows = 1:sizeA_rref[1]
-		if A_rref[rows,Int64(freeVar)] != 0
-			vector[rows] = -A_rref[rows,Int64(freeVar)]
+		if entry == 0
+			# If here then:
+			# Current entry is a zero, increment zero counter
+			currentZeros += 1
 		end
 	end
-	vector[Int64(freeVar)] = 1
-	println()
-	print("x_");print(Int64(freeVar))
-	print("(")
-	print(vector)
-	print(")")
-	freeVarLength = size(freeVars)[1]
-	if freeVar != freeVars[freeVarLength]
-		print(" + ")
+	if currentZeros == size(A_rref)[2]
+		# If here then:
+		# A row with all zeroes was found
+		hasAllZeroRow = true
 	end
+	currentZeros = 0
+	index += 1
 end
 
-println()
-println()
-exit(0)
+if hasAllZeroRow == true
+	# If here then:
+	# The vectors are not linearly independent
+	println("These two vectors are linearly dependent")
+else
+	# If here then:
+	# The vectors are not linearly independent
+	println("These two vectors are linearly independent")
+end
