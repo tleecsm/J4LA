@@ -1,19 +1,7 @@
 import RowEchelon
 
 #=
-Homework 5
-Section 2.2
-Problem 5
+Homework 6
+Section 2.3
+Problems 1,2,3,4,5,6,7,8,9,10
 =#
-
-# Adapt system into a matrix
-A = [8 6 ; 5 4]
-b = [2 ;-1]
-
-# Find Ax = b with x = invA(b)
-invA = inv(A)
-x = invA*b
-
-println("The solution is:")
-print("x = ")
-println(x)
